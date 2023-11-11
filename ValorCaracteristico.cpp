@@ -65,5 +65,9 @@ int main(int argc, char** argv)
 		cout << "Lambda_" << i << " = " << lambdas[i] << ", ";
 	}
 
+	MetodoPotencias metodoPotencias(N, lambda);
+	metodoPotencias.Solve();
+	cout << "\n" << "mu = " << metodoPotencias.GetSolution() << ", err = " << metodoPotencias.GetError() << endl;
+
 	return 0;
 }

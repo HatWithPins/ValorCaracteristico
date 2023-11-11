@@ -9,6 +9,7 @@ MetodoQR::MetodoQR(int N, double lambda)
 	_N = N;
 	_lambda = lambda;
 	autovalores = new double[N];
+	b_n = new double[_N];
 }
 
 MetodoQR::~MetodoQR()
@@ -37,7 +38,6 @@ void MetodoQR::Solve()
 	double* c_n = new double[_N];
 	double* q = new double[_N];
 
-	double* b_n = new double[_N];
 	double* a = new double[_N];
 
 	for (int i = 0; i < _N; i++)
@@ -138,5 +138,14 @@ double* MetodoQR::GetSolution()
 
 void MetodoQR::WriteSolution()
 {
+	ofstream file{ "results/metodo_QR-lambda-" + to_string(_lambda) + "-N-" + to_string(_N) + ".csv" };
 
+	file << "lambda,b_n\n";
+
+	for (int i = 0; i < _N; i++)
+	{
+		file << to_string(autovalores[i]) + "," + to_string(b_n[i]) + "\n";
+	}
+
+	file.close();
 }

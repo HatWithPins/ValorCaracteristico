@@ -6,6 +6,7 @@ class MetodoQR
         int _N;
         double _lambda;
         double* autovalores;
+        double* b_n;
 
     public:
         MetodoQR(int N, double lambda);

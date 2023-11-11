@@ -12,10 +12,13 @@ endif()
 project ("ValorCaracteristico")
 
 # Add source to this project's executable.
-add_executable (ValorCaracteristico "ValorCaracteristico.cpp" "ValorCaracteristico.h" "MetodoQR.h" "MetodoQR.cpp" "MetodoPotencias.h" "MetodoPotencias.cpp")
+file(GLOB ValorCaracteristico_sources ./**.cpp)
+set(ValorCaracteristico ${ValorCaracteristico_sources})
+add_executable (ValorCaracteristico ${ValorCaracteristico_sources})
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET ValorCaracteristico PROPERTY CXX_STANDARD 20)
 endif()
 
-# TODO: Add tests and install targets if needed.
+add_custom_target(results ALL
+    COMMAND ${CMAKE_COMMAND} -E make_directory results)

@@ -4,19 +4,26 @@
 
 using namespace std;
 
+//Constructor
 MetodoQR::MetodoQR(int N, double lambda)
 {
 	_N = N;
 	_lambda = lambda;
 	autovalores = new double[N];
+	//Aunque b_n en realidad tendría 1 elemento menos, para simplificar el trabajo con los índices, se crea de tamaño
+	//N y se ignora el índice 0.
+	//Although b_n actually has one element less, in order to ease indexing, b_n has size N but we ignore the first element.
 	b_n = new double[_N];
 }
 
+//Destructor
 MetodoQR::~MetodoQR()
 {
 	delete[] autovalores;
 }
 
+//Implementación del método QR.
+//QR method implementation.
 void MetodoQR::Solve()
 {
 	int M = 400;
@@ -30,6 +37,8 @@ void MetodoQR::Solve()
 	double mu_2;
 	double sigma;
 
+	//Variables auxiliares para calcular las matrices Q y R.
+	//Helping variables to calcultate Q and R matrices.
 	double* x = new double[_N];
 	double* y = new double[_N];
 	double* z = new double[_N];
@@ -40,6 +49,8 @@ void MetodoQR::Solve()
 
 	double* a = new double[_N];
 
+	//Primera asignación.
+	//Initial assigment.
 	for (int i = 0; i < _N; i++)
 	{
 		b_n[i] = _lambda;
@@ -48,6 +59,8 @@ void MetodoQR::Solve()
 
 	for (int k = 0; k < M; k++)
 	{
+		//Comprobando si se ha resuelto el problema para el último b_n.
+		//Checking if problem is solved for latest b_n.
 		if (b_n[n] <= TOL)
 		{
 			autovalores[n] = a[n] + SHIFT;
@@ -70,6 +83,8 @@ void MetodoQR::Solve()
 			break;
 		}
 
+		//Seguimos resolviendo para b_n.
+		// Solving for b_n. 
 		b = -(a[n - 1] + a[n]);
 		c = a[n] * a[n - 1] - b_n[n] * b_n[n];
 		d = sqrt(b * b - 4 * c);
@@ -85,6 +100,8 @@ void MetodoQR::Solve()
 			mu_2 = 2 * c / (d - b);
 		}
 
+		//Comprobamos si el problema está resuelto por completo.
+		//Checking if problem is completely solved.
 		if (n == 1)
 		{
 			autovalores[0] = mu_1 + SHIFT;
@@ -92,6 +109,8 @@ void MetodoQR::Solve()
 			break;
 		}
 
+		//Los siguientes pasos son el cálculo de las matrices Q y R y su aplicación.
+		//Next steps are for calculating Q and R matrices and their application.
 		sigma = mu_1 * (abs(mu_1 - a[n]) < abs(mu_2 - a[n])) + mu_2 * (abs(mu_1 - a[n]) > abs(mu_2 - a[n]));
 		SHIFT += sigma;
 
@@ -131,11 +150,15 @@ void MetodoQR::Solve()
 	}
 }
 
+//Para devolver los autovalores.
+//To return eigenvalues.
 double* MetodoQR::GetSolution()
 {
 	return autovalores;
 }
 
+//Para escribir la solución en un CSV.
+//To write solution to CSV.
 void MetodoQR::WriteSolution()
 {
 	ofstream file{ "results/metodo_QR-lambda-" + to_string(_lambda) + "-N-" + to_string(_N) + ".csv" };

@@ -59,15 +59,11 @@ int main(int argc, char** argv)
 
 	MetodoQR metodoQR(N, lambda);
 	metodoQR.Solve();
-	double* lambdas = metodoQR.GetSolution();
-	for (int i = 0; i < N; i++)
-	{
-		cout << "Lambda_" << i << " = " << lambdas[i] << ", ";
-	}
+	metodoQR.WriteSolution();
 
 	MetodoPotencias metodoPotencias(N, lambda);
 	metodoPotencias.Solve();
-	cout << "\n" << "mu = " << metodoPotencias.GetSolution() << ", err = " << metodoPotencias.GetError() << endl;
+	metodoPotencias.WriteSolution();
 
 	return 0;
 }

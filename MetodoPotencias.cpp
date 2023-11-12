@@ -34,7 +34,7 @@ MetodoPotencias::~MetodoPotencias()
 void MetodoPotencias::Solve()
 {
 	int M = 1000;
-	double TOL = 0.0000001;
+	double TOL = 0.00000001;
 	double* y = new double[_N];
 
 	int p = 0;
@@ -127,19 +127,19 @@ double MetodoPotencias::GetError()
 //To write results and used vector to a file.
 void MetodoPotencias::WriteSolution()
 {
-	ofstream file{ "results/metodo_Potencias-lambda-" + to_string(_lambda) + "-N-" + to_string(_N) + ".csv" };
-
-	file << "x_0=(";
+	ofstream file{ "results/metodo_Potencias-lambda-" + to_string(_lambda) + "-N-" + to_string(_N) + ".txt" };
+	
+	file << "$\textbf{x}_0=($";
 
 	for (int i = 0; i < _N; i++)
 	{
 		if (i < _N - 1)
 		{
-			file << to_string(x[i]) + ",";
+			file << to_string(x[i]) + ", ";
 		}
 		else
 		{
-			file << to_string(x[i]) + ")\n";
+			file << to_string(x[i]) + "$)$\n";
 		}
 	}
 

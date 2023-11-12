@@ -28,7 +28,7 @@ void MetodoQR::Solve()
 {
 	int M = 1000;
 	int n = _N - 1;
-	double TOL = 0.0000001;
+	double TOL = 0.00000001;
 	double SHIFT = 0.0;
 	double b;
 	double c;
@@ -61,12 +61,12 @@ void MetodoQR::Solve()
 	{
 		//Comprobando si se ha resuelto el problema para el último b_n.
 		//Checking if problem is solved for latest b_n.
-		if (b_n[n] <= TOL)
+		if (abs(b_n[n]) <= TOL)
 		{
 			autovalores[n] = a[n] + SHIFT;
 			n--;
 		}
-		if (b_n[1] <= TOL)
+		if (abs(b_n[1]) <= TOL)
 		{
 			autovalores[0] = a[0] + SHIFT;
 			n--;
@@ -169,13 +169,35 @@ double* MetodoQR::GetSolution()
 //To write solution to CSV.
 void MetodoQR::WriteSolution()
 {
-	ofstream file{ "results/metodo_QR-lambda-" + to_string(_lambda) + "-N-" + to_string(_N) + ".csv" };
+	ofstream file{ "results/metodo_QR-lambda-" + to_string(_lambda) + "-N-" + to_string(_N) + ".txt" };
 
-	file << "lambda,b_n\n";
+	file << "$\lambda=$";
 
 	for (int i = 0; i < _N; i++)
 	{
-		file << to_string(autovalores[i]) + "," + to_string(b_n[i]) + "\n";
+		if (i != _N - 1)
+		{
+			file << to_string(autovalores[i]) + ", ";
+		}
+		else
+		{
+			file << to_string(autovalores[i]) + "\n";
+		}
+		
+	}
+
+	file << "$b_{n}=$";
+	for (int i = 1; i < _N; i++)
+	{
+		if (i != _N - 1)
+		{
+			file << to_string(b_n[i]) + ", ";
+		}
+		else
+		{
+			file << to_string(b_n[i]) + "\n";
+		}
+
 	}
 
 	file.close();

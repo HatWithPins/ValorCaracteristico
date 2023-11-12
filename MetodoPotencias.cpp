@@ -15,7 +15,7 @@ MetodoPotencias::MetodoPotencias(int N, double lambda)
 	//Test x vector. There is no criteria to pick a particular one. Ideally, this should be specified without recompiling.
 	for (int i = 0; i < _N; i++)
 	{
-		x[i] = i;
+		x[i] = i + 1;
 	}
 
 	mu = 0.0;
@@ -33,7 +33,7 @@ MetodoPotencias::~MetodoPotencias()
 //Method implementation.
 void MetodoPotencias::Solve()
 {
-	int M = 400;
+	int M = 1000;
 	double TOL = 0.0000001;
 	double* y = new double[_N];
 
@@ -145,11 +145,7 @@ void MetodoPotencias::WriteSolution()
 
 
 	file << "lambda,err\n";
-
-	for (int i = 0; i < _N; i++)
-	{
-		file << to_string(mu) + "," + to_string(err) + "\n";
-	}
+	file << to_string(mu) + "," + to_string(err) + "\n";
 
 	file.close();
 }

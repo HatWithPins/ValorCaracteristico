@@ -26,7 +26,7 @@ MetodoQR::~MetodoQR()
 //QR method implementation.
 void MetodoQR::Solve()
 {
-	int M = 400;
+	int M = 1000;
 	int n = _N - 1;
 	double TOL = 0.0000001;
 	double SHIFT = 0.0;
@@ -111,6 +111,9 @@ void MetodoQR::Solve()
 
 		//Los siguientes pasos son el cálculo de las matrices Q y R y su aplicación.
 		//Next steps are for calculating Q and R matrices and their application.
+
+		//Cálculo del desplazamiento.
+		//Fancy way to calculate SHIFT.
 		sigma = mu_1 * (abs(mu_1 - a[n]) < abs(mu_2 - a[n])) + mu_2 * (abs(mu_1 - a[n]) > abs(mu_2 - a[n]));
 		SHIFT += sigma;
 
@@ -122,6 +125,8 @@ void MetodoQR::Solve()
 		x[0] = d_n[0];
 		y[0] = b_n[1];
 
+		//Cálculo de PA y R.
+		//PA and R calculation.
 		for (int j = 1; j <= n; j++)
 		{
 			z[j-1] = sqrt(x[j-1] * x[j-1] + b_n[j] * b_n[j]);
@@ -140,6 +145,9 @@ void MetodoQR::Solve()
 		a[0] = sigma_n[1] * q[0] + c_n[1] * z[0];
 		b_n[1] = sigma_n[1] * z[1];
 
+
+		//Cálculo de la siguiente iteración de A.
+		//Next iteration of A.
 		for (int j = 1; j <= n ; j++)
 		{
 			a[j] = sigma_n[j + 1] * q[j] + c_n[j]*c_n[j + 1] * z[j];

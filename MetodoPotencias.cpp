@@ -1,6 +1,7 @@
 #include "MetodoPotencias.h"
 #include <fstream>
 #include <string>
+#include <cmath>
 
 using namespace std;
 
@@ -45,7 +46,7 @@ void MetodoPotencias::Solve()
 	//Computation of infinity norm of x.
 	for (int i = 1; i < _N; i++)
 	{
-		if (abs(x_p) < abs(x[i]))
+		if (std::abs(x_p) < std::abs(x[i]))
 		{
 			p = i;
 			x_p = x[p];
@@ -74,7 +75,7 @@ void MetodoPotencias::Solve()
 		y_p = y[p];
 		for (int j = 1; j < _N; j++)
 		{
-			if (abs(y_p) < abs(y[j]))
+			if (std::abs(y_p) < std::abs(y[j]))
 			{
 				p = j;
 				y_p = y[p];
@@ -84,19 +85,19 @@ void MetodoPotencias::Solve()
 		mu = y_p;
 		//Si el autovalor está por debajo de la tolerancia, asumimos que es 0.0 y acabamos.
 		//If eigenvalue is below tolerance, we assume it's 0.0 and end.
-		if (abs(mu) < TOL) {
+		if (std::abs(mu) < TOL) {
 			mu = 0.0;
 			break;
 		}
 		
 		//Cálculo del error estimado.
 		//Estimating error.
-		err = abs(x[0] - y[0] / y_p);
+		err = std::abs(x[0] - y[0] / y_p);
 		for (int j = 1; j < _N; j++)
 		{
-			if (err < abs(x[j] - y[j] / y_p))
+			if (err < std::abs(x[j] - y[j] / y_p))
 			{
-				err = abs(x[j] - y[j] / y_p);
+				err = std::abs(x[j] - y[j] / y_p);
 			}
 		}
 
@@ -127,25 +128,25 @@ double MetodoPotencias::GetError()
 //To write results and used vector to a file.
 void MetodoPotencias::WriteSolution()
 {
-	ofstream file{ "results/metodo_Potencias-lambda-" + to_string(_lambda) + "-N-" + to_string(_N) + ".txt" };
+	ofstream latex_file{ "results/metodo_Potencias-lambda-" + to_string(_lambda) + "-N-" + to_string(_N) + ".txt" };
 	
-	file << "$\textbf{x}_0=($";
+	latex_file << "$\\textbf{x}_0=($";
 
 	for (int i = 0; i < _N; i++)
 	{
 		if (i < _N - 1)
 		{
-			file << to_string(x[i]) + ", ";
+			latex_file << to_string(x[i]) + ", ";
 		}
 		else
 		{
-			file << to_string(x[i]) + "$)$\n";
+			latex_file << to_string(x[i]) + "$)$\n";
 		}
 	}
 
 
-	file << "lambda,err\n";
-	file << to_string(mu) + "," + to_string(err) + "\n";
+	latex_file << "lambda,err\n";
+	latex_file << to_string(mu) + "," + to_string(err) + "\n";
 
-	file.close();
+	latex_file.close();
 }

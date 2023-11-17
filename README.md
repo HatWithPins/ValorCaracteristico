@@ -5,8 +5,8 @@ Implementación del método QR y de la potencia para obtener los autovalores de un
 
 Para compilar en la línea de comandos:
 
-`cmake` \
-`cmake --build <carpeta-de-salida> --target ValorCarateristico`
+`cmake CMakeList.txt` \
+`cmake --build . --target ValorCarateristico`
 
 Si se usa un IDE tipo Visual Studio, abre la carpeta como un proyecto y compila como cualquier otro proyecto. Asegúrate de que tienes la extensión para CMake.
 
@@ -26,8 +26,8 @@ Implementation of QR and power method to obtain eigenvalues for a typical ellipt
 
 To build using command line:
 
-`cmake` \
-`cmake --build <output-folder> --target ValorCarateristico`
+`cmake CMakeList.txt` \
+`cmake --build . --target ValorCarateristico`
 
 In case you use and IDE like Visual Studio, open the folder as a project and build it like any other project. Ensure that your IDE has the extensions for CMake.
 

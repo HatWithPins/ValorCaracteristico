@@ -1,6 +1,7 @@
 #include "MetodoQR.h"
 #include <fstream>
 #include <string>
+#include <cmath>
 
 using namespace std;
 
@@ -61,12 +62,12 @@ void MetodoQR::Solve()
 	{
 		//Comprobando si se ha resuelto el problema para el último b_n.
 		//Checking if problem is solved for latest b_n.
-		if (abs(b_n[n]) <= TOL)
+		if (std::abs(b_n[n]) <= TOL)
 		{
 			autovalores[n] = a[n] + SHIFT;
 			n--;
 		}
-		if (abs(b_n[1]) <= TOL)
+		if (std::abs(b_n[1]) <= TOL)
 		{
 			autovalores[0] = a[0] + SHIFT;
 			n--;
@@ -114,7 +115,7 @@ void MetodoQR::Solve()
 
 		//Cálculo del desplazamiento.
 		//Fancy way to calculate SHIFT.
-		sigma = mu_1 * (abs(mu_1 - a[n]) < abs(mu_2 - a[n])) + mu_2 * (abs(mu_1 - a[n]) > abs(mu_2 - a[n]));
+		sigma = mu_1 * (std::abs(mu_1 - a[n]) < std::abs(mu_2 - a[n])) + mu_2 * (std::abs(mu_1 - a[n]) > std::abs(mu_2 - a[n]));
 		SHIFT += sigma;
 
 		for (int j = 0; j <= n; j++)
@@ -169,36 +170,40 @@ double* MetodoQR::GetSolution()
 //To write solution to CSV.
 void MetodoQR::WriteSolution()
 {
-	ofstream file{ "results/metodo_QR-lambda-" + to_string(_lambda) + "-N-" + to_string(_N) + ".txt" };
+	ofstream latex_file{ "results/metodo_QR-lambda-" + to_string(_lambda) + "-N-" + to_string(_N) + ".txt" };
+	ofstream csv_file{ "results/metodo_QR-lambda-" + to_string(_lambda) + "-N-" + to_string(_N) + ".csv" };
 
-	file << "$\lambda=$";
+	latex_file << "$\\lambda=$";
+	csv_file << "lambda,b_n\n";
 
 	for (int i = 0; i < _N; i++)
 	{
+		csv_file << to_string(autovalores[i]) + "," + to_string(b_n[i]) +"\n";
 		if (i != _N - 1)
 		{
-			file << to_string(autovalores[i]) + ", ";
+			latex_file << to_string(autovalores[i]) + ", ";
 		}
 		else
 		{
-			file << to_string(autovalores[i]) + "\n";
+			latex_file << to_string(autovalores[i]) + "\n";
 		}
 		
 	}
 
-	file << "$b_{n}=$";
+	csv_file.close();
+	latex_file << "$b_{n}=$";
 	for (int i = 1; i < _N; i++)
 	{
 		if (i != _N - 1)
 		{
-			file << to_string(b_n[i]) + ", ";
+			latex_file << to_string(b_n[i]) + ", ";
 		}
 		else
 		{
-			file << to_string(b_n[i]) + "\n";
+			latex_file << to_string(b_n[i]) + "\n";
 		}
 
 	}
 
-	file.close();
+	latex_file.close();
 }
